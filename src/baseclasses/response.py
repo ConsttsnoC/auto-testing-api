@@ -1,5 +1,5 @@
 # Импортируем функцию validate из модуля jsonschema для валидации данных
-from jsonschema import validate
+#from jsonschema import validate
 
 # Импортируем перечисление GlobalErrorMessage из модуля global_enums
 from src.enums.global_enums import GlobalErrorMessage
@@ -19,13 +19,16 @@ class Response:
     # Метод для валидации ответа по заданной JSON-схеме
     def validate(self, schema):
         # Проверяем, является ли JSON ответа списком
-        if isinstance(self.response.json, list):
+        if isinstance(self.response_json, list):
             # Если да, проходим по элементам списка и валидируем каждый по схеме
-            for item in self.response.json:
-                validate(item, schema)
+            for item in self.response_json:
+                schema.model_validate(item)
+                #validate(item, schema)
         else:
+            schema.model_validate(self.response_json)
             # Если нет, валидируем весь JSON ответа по схеме
-            validate(self.response.json, schema)
+            #validate(self.response.json, schema)
+        return self
 
     # Метод для проверки статусного кода ответа
     def assert_status_code(self, status_code):
