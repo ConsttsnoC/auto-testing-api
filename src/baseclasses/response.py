@@ -12,7 +12,7 @@ class Response:
         # Сохраняем переданный объект response как атрибут объекта
         self.response = response
         # Получаем JSON-представление ответа и сохраняем как атрибут объекта
-        self.response_json = response.json()
+        self.response_json = response.json().get('data')
         # Получаем статусный код ответа и сохраняем как атрибут объекта
         self.response_status = response.status_code
 
@@ -28,7 +28,7 @@ class Response:
             schema.model_validate(self.response_json)
             # Если нет, валидируем весь JSON ответа по схеме
             #validate(self.response.json, schema)
-        return self
+
 
     # Метод для проверки статусного кода ответа
     def assert_status_code(self, status_code):
